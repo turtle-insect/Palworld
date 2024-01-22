@@ -21,8 +21,40 @@
 			</MenuItem>
 		</Menu>
 		<TabControl>
-			<TabItem Header="Basic">
-				
+			<TabItem Header="Player">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
+						<ColumnDefinition Width="5"/>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition Height="9*"/>
+					</Grid.RowDefinitions>
+					<Label Content="Exp"/>
+					<TextBox Grid.Column="1" Text="{Binding Player.Exp, UpdateSourceTrigger=PropertyChanged}"/>
+					<Label Grid.Row="1" Content="HP"/>
+					<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Player.HP, UpdateSourceTrigger=PropertyChanged}"/>
+					<Label Grid.Row="2" Content="MaxHP"/>
+					<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Player.MaxHP, UpdateSourceTrigger=PropertyChanged}"/>
+				</Grid>
+			</TabItem>
+			<TabItem Header="Item">
+				<ListBox ItemsSource="{Binding Items}">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<Label Content="Count"/>
+								<TextBox Text="{Binding Count, UpdateSourceTrigger=PropertyChanged}" Width="50"/>
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
 			</TabItem>
 		</TabControl>
 	</DockPanel>

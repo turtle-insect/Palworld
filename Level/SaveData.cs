@@ -15,6 +15,7 @@ namespace Level
 		private String mFileName = String.Empty;
 		private Byte[]? mBuffer = null;
 		private readonly System.Text.Encoding mEncode = System.Text.Encoding.UTF8;
+		private const String mMagic = "PlZ2";
 		public uint Adventure { private get; set; } = 0;
 
 		private SaveData()
@@ -30,8 +31,8 @@ namespace Level
 			if (!System.IO.File.Exists(filename)) return false;
 
 			var buffer = System.IO.File.ReadAllBytes(filename);
-			var marker = mEncode.GetString(buffer, 8, 4);
-			if (marker != "PlZ2") return false;
+			var magic = mEncode.GetString(buffer, 8, 4);
+			if (magic != mMagic) return false;
 
 			var tmp = new Byte[buffer.Length - 12];
 			Array.Copy(buffer, 12, tmp, 0, tmp.Length);
@@ -57,10 +58,10 @@ namespace Level
 			var output = new Byte[buffer.Length + 12];
 			Array.Copy(BitConverter.GetBytes(mBuffer.Length), output, 4);
 			Array.Copy(BitConverter.GetBytes(length), 0, output, 4, 4);
-			Array.Copy(mEncode.GetBytes("PlZ2"), 0, output, 8, 4);
+			Array.Copy(mEncode.GetBytes(mMagic), 0, output, 8, 4);
 			Array.Copy(buffer, 0, output, 12, buffer.Length);
 
-			System.IO.File.WriteAllBytes(mFileName + "_", output);
+			System.IO.File.WriteAllBytes(mFileName, output);
 			return true;
 		}
 
@@ -80,18 +81,20 @@ namespace Level
 
 		public void Export(String filename)
 		{
+			if (mBuffer == null) return;
+
 			System.IO.File.WriteAllBytes(filename, mBuffer);
 		}
 
-		public uint ReadNumber(uint address, uint size)
+		public UInt64 ReadNumber(uint address, uint size)
 		{
 			if (mBuffer == null) return 0;
 			address = CalcAddress(address);
 			if (address + size >= mBuffer.Length) return 0;
-			uint result = 0;
+			UInt64 result = 0;
 			for (int i = 0; i < size; i++)
 			{
-				result += (uint)mBuffer[address + i] << (i * 8);
+				result += (UInt64)mBuffer[address + i] << (i * 8);
 			}
 			return result;
 		}
@@ -132,7 +135,7 @@ namespace Level
 			return mEncode.GetString(tmp).Trim('\0');
 		}
 
-		public void WriteNumber(uint address, uint size, uint value)
+		public void WriteNumber(uint address, uint size, UInt64 value)
 		{
 			if (mBuffer == null) return;
 			address = CalcAddress(address);
@@ -260,8 +263,12 @@ namespace Level
 				{
 					using (var output = new MemoryStream())
 					{
-						zlib.CopyTo(output);
-						result = output.ToArray();
+						try
+						{
+							zlib.CopyTo(output);
+							result = output.ToArray();
+						}
+						catch { }
 					}
 				}
 			}
