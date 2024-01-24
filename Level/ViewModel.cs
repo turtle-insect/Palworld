@@ -17,6 +17,7 @@ namespace Level
 
 		public Player? Player { get; private set; }
 		public ObservableCollection<Item> Items { get; private set; } = new ObservableCollection<Item>();
+		public ObservableCollection<Pal> Pals { get; private set; } = new ObservableCollection<Pal>();
 
 		public ViewModel()
 		{
@@ -29,10 +30,16 @@ namespace Level
 		private void Initialize()
 		{
 			var address_list = SaveData.Instance().FindAddress("PalIndividualCharacterSaveParameter", 0);
-			if(address_list.Count >0)
+			if (address_list.Count > 0)
 			{
 				Player = new Player(address_list[0]);
 				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Player)));
+			}
+
+			Pals.Clear();
+			for(int index = 1; index < address_list.Count; index++)
+			{
+				Pals.Add(new Pal(address_list[index]));
 			}
 
 			Items.Clear();
@@ -76,6 +83,7 @@ namespace Level
 		private void ExportFile(Object? parameter)
 		{
 			var dlg = new SaveFileDialog();
+			dlg.Filter = "GVAS|*.gvas";
 			if (dlg.ShowDialog() == false) return;
 
 			SaveData.Instance().Export(dlg.FileName);

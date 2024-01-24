@@ -34,7 +34,8 @@
 						<RowDefinition/>
 						<RowDefinition/>
 						<RowDefinition/>
-						<RowDefinition Height="9*"/>
+						<RowDefinition/>
+						<RowDefinition Height="8*"/>
 					</Grid.RowDefinitions>
 					<Label Content="Exp"/>
 					<TextBox Grid.Column="1" Text="{Binding Player.Exp, UpdateSourceTrigger=PropertyChanged}"/>
@@ -42,6 +43,8 @@
 					<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Player.HP, UpdateSourceTrigger=PropertyChanged}"/>
 					<Label Grid.Row="2" Content="MaxHP"/>
 					<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Player.MaxHP, UpdateSourceTrigger=PropertyChanged}"/>
+					<Label Grid.Row="3" Content="StatusPoint"/>
+					<TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Player.StatusPoint, UpdateSourceTrigger=PropertyChanged}"/>
 				</Grid>
 			</TabItem>
 			<TabItem Header="Item">
@@ -55,6 +58,31 @@
 						</DataTemplate>
 					</ListBox.ItemTemplate>
 				</ListBox>
+			</TabItem>
+			<TabItem Header="Pal">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition/>
+						<ColumnDefinition Width="2*"/>
+						<ColumnDefinition Width="2*"/>
+					</Grid.ColumnDefinitions>
+					<ListBox Name="ListBoxPal" ItemsSource="{Binding Pals}" d:ItemsSource="{d:SampleData}"/>
+					<Grid Grid.Column="1">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition/>
+							<ColumnDefinition/>
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition/>
+							<RowDefinition/>
+							<RowDefinition Height="10*"/>
+						</Grid.RowDefinitions>
+						<Label Content="HP"/>
+						<TextBox Grid.Column="1" Text="{Binding ElementName=ListBoxPal, Path=SelectedItem.HP, UpdateSourceTrigger=PropertyChanged}"/>
+						<Label Grid.Row="1" Content="MaxHP"/>
+						<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ElementName=ListBoxPal, Path=SelectedItem.MaxHP, UpdateSourceTrigger=PropertyChanged}"/>
+					</Grid>
+				</Grid>
 			</TabItem>
 		</TabControl>
 	</DockPanel>

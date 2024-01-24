@@ -11,6 +11,7 @@ namespace Level
 		private readonly uint mExpAddress;
 		private readonly uint mHPAddress;
 		private readonly uint mMaxHPAddress;
+		private readonly uint mStatusPointAddress;
 
 		public Player(uint address)
 		{
@@ -22,6 +23,9 @@ namespace Level
 
 			address_list = SaveData.Instance().FindAddress("MaxHP", address);
 			if (address_list.Count > 0) mMaxHPAddress = address_list[0] + 104;
+
+			address_list = SaveData.Instance().FindAddress("UnusedStatusPoint", address);
+			if (address_list.Count > 0) mStatusPointAddress = address_list[0] + 43;
 		}
 
 		public UInt64 Exp
@@ -40,6 +44,12 @@ namespace Level
 		{
 			get => SaveData.Instance().ReadNumber(mMaxHPAddress, 8) / 1000;
 			set => SaveData.Instance().WriteNumber(mMaxHPAddress, 8, value * 1000);
+		}
+
+		public UInt64 StatusPoint
+		{
+			get => SaveData.Instance().ReadNumber(mStatusPointAddress, 4);
+			set => SaveData.Instance().WriteNumber(mStatusPointAddress, 4, value);
 		}
 	}
 }
