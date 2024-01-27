@@ -89,6 +89,8 @@ namespace Level
 		public UInt64 ReadNumber(uint address, uint size)
 		{
 			if (mBuffer == null) return 0;
+			if(address == 0) return 0;
+
 			address = CalcAddress(address);
 			if (address + size >= mBuffer.Length) return 0;
 			UInt64 result = 0;
@@ -138,6 +140,8 @@ namespace Level
 		public void WriteNumber(uint address, uint size, UInt64 value)
 		{
 			if (mBuffer == null) return;
+			if(address == 0) return;
+
 			address = CalcAddress(address);
 			if (address + size >= mBuffer.Length) return;
 			for (uint i = 0; i < size; i++)
