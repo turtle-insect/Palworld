@@ -54,6 +54,7 @@
 							<StackPanel Orientation="Horizontal">
 								<Label Content="Count"/>
 								<TextBox Text="{Binding Count, UpdateSourceTrigger=PropertyChanged}" Width="50"/>
+								<Label Content="{Binding Name}"/>
 							</StackPanel>
 						</DataTemplate>
 					</ListBox.ItemTemplate>
