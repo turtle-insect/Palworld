@@ -8,6 +8,7 @@ namespace Level
 {
 	internal class Player
 	{
+		private readonly uint mNickNameAddress;
 		private readonly uint mExpAddress;
 		private readonly uint mHPAddress;
 		private readonly uint mMaxHPAddress;
@@ -15,7 +16,10 @@ namespace Level
 
 		public Player(uint address)
 		{
-			var address_list = SaveData.Instance().FindAddress("Exp", address);
+			var address_list = SaveData.Instance().FindAddress("NickName", address);
+			if (address_list.Count > 0) mNickNameAddress = address_list[0];
+
+			address_list = SaveData.Instance().FindAddress("Exp", address);
 			if(address_list.Count > 0) mExpAddress = address_list[0] + 29;
 
 			address_list = SaveData.Instance().FindAddress("HP", address);
@@ -26,6 +30,15 @@ namespace Level
 
 			address_list = SaveData.Instance().FindAddress("UnusedStatusPoint", address);
 			if (address_list.Count > 0) mStatusPointAddress = address_list[0] + 43;
+		}
+
+		public String Name
+		{
+			get
+			{
+				var length = (uint)SaveData.Instance().ReadNumber(mNickNameAddress + 34, 4);
+				return SaveData.Instance().ReadText(mNickNameAddress + 38, length);
+			}
 		}
 
 		public UInt64 Exp
