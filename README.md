@@ -1,3 +1,5 @@
+![DL Count](https://img.shields.io/github/downloads/turtle-insect/Palworld/total.svg)
+
 # Palworld
 Steam Palworld SaveDate Editor
 
